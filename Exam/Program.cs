@@ -1,9 +1,9 @@
 using System.Text;
+using App.DAL.EF;
 using App.Domain.Identity;
 using Exam;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Exam.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
@@ -65,8 +65,10 @@ builder.Services.AddCors(options =>
             policyBuilder.AllowAnyMethod();
         });
 });
-
+// ======================= Pipeline setup and start of webpage =========================
 var app = builder.Build();
+
+AppDataHelper.SetUpAppData(app, app.Environment, app.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -105,6 +107,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
 
 app.MapControllerRoute(
     name: "default",

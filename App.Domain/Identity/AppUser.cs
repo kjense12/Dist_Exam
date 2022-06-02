@@ -15,6 +15,7 @@ public class AppUser : BaseUser
 
     
     //Add custom objects to user
+    public ICollection<Item>? Items { get; set; }
 
     public ICollection<RefreshToken>? RefreshTokens { get; set; }
     
